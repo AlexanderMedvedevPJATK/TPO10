@@ -1,0 +1,14 @@
+spring:
+  h2:
+    console:
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:links;DATABASE_TO_UPPER=false;
+    username: user
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
