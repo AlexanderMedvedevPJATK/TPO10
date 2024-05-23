@@ -1,5 +1,6 @@
 package com.s28572.tpo10;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -68,16 +69,13 @@ public class Link {
         this.visits = visits;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void incrementVisits() {
-        visits++;
     }
 
     private String generateId() {

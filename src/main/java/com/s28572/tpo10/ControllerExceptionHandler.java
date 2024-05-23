@@ -19,6 +19,6 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("reason: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).header("reason", ex.getMessage()).build();
     }
 }

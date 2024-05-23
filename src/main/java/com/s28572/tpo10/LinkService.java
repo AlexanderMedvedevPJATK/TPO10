@@ -29,6 +29,7 @@ public class LinkService {
 
     public void updateLink(String id, LinkDTO linkDTO) {
         Link link = linkRepository.findById(id).orElseThrow(() -> new NoSuchElementException(id));
+        System.out.println(link.getPassword() + " " + linkDTO.getPassword());
         if (linkDTO.getPassword() != null && link.getPassword().equals(linkDTO.getPassword())) {
             if (linkDTO.getName() != null) {
                 link.setName(linkDTO.getName());
@@ -37,8 +38,9 @@ public class LinkService {
                 link.setTargetUrl(linkDTO.getTargetUrl());
             }
             linkRepository.save(link);
+        } else {
+            throw new IllegalArgumentException("wrong password");
         }
-        throw new IllegalArgumentException("wrong password");
     }
 
     public void deleteLink(String id, Optional<String> password) {
@@ -48,7 +50,13 @@ public class LinkService {
         }
         if (password.isPresent() && link.get().getPassword().equals(password.get())) {
             linkRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("wrong password");
         }
-        throw new IllegalArgumentException("wrong password");
+    }
+
+    public void incrementCounter(Link link) {
+        link.setVisits(link.getVisits() + 1);
+        linkRepository.save(link);
     }
 }
