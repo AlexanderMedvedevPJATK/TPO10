@@ -1,21 +1,35 @@
-package com.s28572.tpo10;
+package com.s28572.tpo10.Services;
 
+import com.s28572.tpo10.DTOs.LinkDTO;
+import com.s28572.tpo10.Entities.Link;
+import com.s28572.tpo10.Repositories.LinkRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class LinkService {
 
     private final LinkRepository linkRepository;
+    private final Validator validator;
 
-    public LinkService(LinkRepository linkRepository) {
+    public LinkService(LinkRepository linkRepository, Validator validator) {
         this.linkRepository = linkRepository;
+        this.validator = validator;
     }
 
     public Link addLink(LinkDTO linkDTO) {
         Link link = new Link(linkDTO.getName(), linkDTO.getTargetUrl());
+        Set<ConstraintViolation<Link>> violations = validator.validate(link);
+        if (!violations.isEmpty()) {
+            violations.forEach(err -> System.out.println(
+                    "> " + err.getPropertyPath() + " " + err.getMessage() + " (" + err.getInvalidValue() + ")"
+            ));
+        }
         if (linkDTO.getPassword() != null) {
             link.setPassword(linkDTO.getPassword());
         }
@@ -30,7 +44,7 @@ public class LinkService {
     public void updateLink(String id, LinkDTO linkDTO) {
         Link link = linkRepository.findById(id).orElseThrow(() -> new NoSuchElementException(id));
         System.out.println(link.getPassword() + " " + linkDTO.getPassword());
-        if (linkDTO.getPassword() != null && link.getPassword().equals(linkDTO.getPassword())) {
+        if (linkDTO.getPassword() != null && linkDTO.getPassword().equals(link.getPassword())) {
             if (linkDTO.getName() != null) {
                 link.setName(linkDTO.getName());
             }
@@ -48,7 +62,7 @@ public class LinkService {
         if (link.isEmpty()) {
             return;
         }
-        if (password.isPresent() && link.get().getPassword().equals(password.get())) {
+        if (password.isPresent() && password.get().equals(link.get().getPassword())) {
             linkRepository.deleteById(id);
         } else {
             throw new IllegalArgumentException("wrong password");

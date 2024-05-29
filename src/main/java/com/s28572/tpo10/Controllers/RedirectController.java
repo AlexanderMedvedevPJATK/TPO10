@@ -1,5 +1,7 @@
-package com.s28572.tpo10;
+package com.s28572.tpo10.Controllers;
 
+import com.s28572.tpo10.Entities.Link;
+import com.s28572.tpo10.Services.LinkService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

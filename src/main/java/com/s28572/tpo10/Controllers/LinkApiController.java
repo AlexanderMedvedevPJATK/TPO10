@@ -1,6 +1,8 @@
-package com.s28572.tpo10;
+package com.s28572.tpo10.Controllers;
 
-import org.springframework.http.HttpStatus;
+import com.s28572.tpo10.Entities.Link;
+import com.s28572.tpo10.DTOs.LinkDTO;
+import com.s28572.tpo10.Services.LinkService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -10,11 +12,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/links")
-public class LinkController {
+public class LinkApiController {
 
     private final LinkService linkService;
 
-    public LinkController(LinkService linkService) {
+    public LinkApiController(LinkService linkService) {
         this.linkService = linkService;
     }
 
@@ -35,8 +37,6 @@ public class LinkController {
         Link link = linkService.getLink(id);
         return ResponseEntity.ok(link);
     }
-
-    // REDIRECT ???
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateLink(@PathVariable String id, @RequestBody LinkDTO linkDTO) {

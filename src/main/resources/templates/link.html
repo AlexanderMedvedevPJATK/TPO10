@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 th:if="${creating == true}" class="mb-4">Create a Link</h2>
+    <h2 th:if="${creating != true}" th:text="'Link with id: ' + ${link.id}" class="mb-4"></h2>
+    <form th:action="@{/links}" th:object="${link}" method="POST">
+        <div class="form-group">
+            <label for="linkName">Link Name</label>
+            <input th:field="*{name}" name="name" type="text" class="form-control" id="linkName" placeholder="Enter the name for the link" required>
+<!--            <span th:if="${nameError != null}" th:text="${nameError}" class="text-danger"></span>-->
+            <span th:errors="*{name}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="linkUrl">Link URL</label>
+            <input th:field="*{targetUrl}" name="targetUrl" type="text" class="form-control" id="linkUrl" placeholder="Enter the link URL" required>
+<!--            <span th:if="${targetUrlError != null}" th:text="${targetUrlError}" class="text-danger"></span>-->
+            <span th:errors="*{targetUrl}" class="error"></span>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="includePassword">
+            <label class="form-check-label" for="includePassword">Include Password</label>
+        </div>
+        <div class="form-group" id="passwordField" style="display: none;">
+            <label for="password">Password</label>
+            <input name="password" type="password" class="form-control" id="password" placeholder="Enter a password">
+            <span th:if="${passwordError != null}" th:text="${passwordError}" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#includePassword').change(function(){
+            if($(this).is(':checked')){
+                $('#passwordField').show();
+                $('#password').prop('required', true);
+            } else {
+                $('#passwordField').hide();
+                $('#password').prop('required', false);
+            }
+        });
+    });
+</script>
+</body>
+</html>

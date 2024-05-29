@@ -1,4 +1,4 @@
-package com.s28572.tpo10;
+package com.s28572.tpo10.DTOs;
 
 public class LinkDTO {
 
